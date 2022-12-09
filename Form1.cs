@@ -17,13 +17,14 @@ namespace ADO.NET_PROJECT
         {
             InitializeComponent();
         }
-        SqlConnection connection = new SqlConnection(@"Data source=NORD\MSSQLSERVER01;initial catalog=ADONET; integrated security =true;");
+        SqlConnection connection = new SqlConnection(@"Data source=DESKTOP-IDSN6PJ\SQLEXPRESS01;initial catalog=GI; integrated security =true;");
         SqlCommand command;
         string queryString;
         SqlDataReader reader;
         private void Form1_Load(object sender, EventArgs e)
         {
-            queryString = "select count(*) from citizens";
+            
+            queryString = "select count(*) from Etudiant";
             command = new SqlCommand(queryString, connection);
             try
             {
@@ -44,23 +45,23 @@ namespace ADO.NET_PROJECT
         }
         private bool IsinputsValid()
         {
-            // Check for input in the Order ID text box.
+           
             if (textBoxCin.Text == "")
             {
-                MessageBox.Show("Please specify the CIN.");
+                MessageBox.Show("Veuillez inserez votre CNE .");
                 return false;
             }
 
-            // Check for characters other than integers.
+          
             else if (textBoxFirstName.Text == "")
             {
-                // Show message and clear input.
-                MessageBox.Show("Please specify the First name");
+     
+                MessageBox.Show("Veuillez inserez votre Prenom");
                 return false;
             }
             else if (textBoxLastName.Text == "")
             {
-                MessageBox.Show("Please specify the Last name");
+                MessageBox.Show("Veuillez inserez votre Nom");
                 return false;
             }
             else
@@ -69,60 +70,70 @@ namespace ADO.NET_PROJECT
 
         private void btnUpDate_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("you clicked me");
+            MessageBox.Show("Cliquez");
         }
 
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            string message = "Do you want to continue?";
-            string title = "Close Window";
+            string message = "Etes-vous sur de continuer ";
+            string title = "Fermez";
             MessageBoxButtons buttons = MessageBoxButtons.YesNo;
             DialogResult result = MessageBox.Show(message, title, buttons);
             if (result == DialogResult.Yes)
             {
                 if (IsinputsValid())
                 {
-                    queryString = "INSERT INTO citizens VALUES(@CIN,@FirstName,@LastName);";
+                    queryString = "INSERT INTO Etudiant  VALUES(@CNE,@Penom,@Nom);";
                     command = new SqlCommand(queryString, connection);
-                    command.Parameters.Add("@CIN", SqlDbType.VarChar);
-                    command.Parameters["@CIN"].Value = textBoxCin.Text;
-                    command.Parameters.Add("@FirstName", SqlDbType.VarChar);
-                    command.Parameters["@FirstName"].Value = textBoxFirstName.Text;
-                    command.Parameters.Add("@LastName", SqlDbType.VarChar);
-                    command.Parameters["@LastName"].Value = textBoxLastName.Text;
+                    command.Parameters.Add("@CNE", SqlDbType.VarChar);
+                    command.Parameters["@CNE"].Value = textBoxCin.Text;
+                    command.Parameters.Add("@Prenom", SqlDbType.VarChar);
+                    command.Parameters["@Prenom"].Value = textBoxFirstName.Text;
+                    command.Parameters.Add("@Nom", SqlDbType.VarChar);
+                    command.Parameters["@Nom"].Value = textBoxLastName.Text;
                     try
                     {
                         connection.Open();
                         command.ExecuteNonQuery();
-                        queryString = "select * from citizens";
+                        queryString = "select * from Etudiant";
                         command = new SqlCommand(queryString, connection);
                         reader = command.ExecuteReader();
-                        // Create a data table to hold the retrieved data.
+                       
                         DataTable dataTable = new DataTable();
 
-                        // Load the data from SqlDataReader into the data table.
                         dataTable.Load(reader);
 
-                        // Display the data from the data table in the data grid view.
+                        
                         this.dataGridView1.DataSource = dataTable;
 
-                        // Close the SqlDataReader.
+                        
                         reader.Close();
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
-                        MessageBox.Show("an Error accured");
+                        MessageBox.Show("Erreur ");
                     }
                 }
 
 
             }
-            else
-            {
-                // Do something  
 
-            }
+
+        }
+
+        private void lblFirstName_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblCin_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxCin_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }
